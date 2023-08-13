@@ -63,10 +63,10 @@ public class GameProgress implements Serializable {
     public static void zipFiles(String zipPath, String[] fileArrayForZip) {
         try (ZipOutputStream saveAsZip = new ZipOutputStream(new FileOutputStream(zipPath, true))) {
             for (String pathFile : fileArrayForZip) {
-                System.out.println(pathFile);
-                String fileName = pathFile.substring(pathFile.lastIndexOf("/") + 1);
-                System.out.println(fileName);
-                saveAsZip.putNextEntry(new ZipEntry(fileName));
+//                System.out.println(pathFile);
+//                String fileName = pathFile.substring(pathFile.lastIndexOf("/") + 1);
+//                System.out.println(fileName);
+                saveAsZip.putNextEntry(new ZipEntry(GameProgress.getFileNameFromPath(pathFile)));
                 FileInputStream readFileToZip = new FileInputStream(pathFile);
                 byte[] byteBuffer = new byte[readFileToZip.available()];
                 readFileToZip.read(byteBuffer);
@@ -77,14 +77,23 @@ public class GameProgress implements Serializable {
                 readFileToZip.close();
                 saveAsZip.write(byteBuffer);
                 saveAsZip.closeEntry();
-                File fileDel = new File(pathFile);
-                if(fileDel.delete()) {
-                    System.out.printf("File %s has been deleted\n", fileName);
-                }
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+    }
 
+    public static void deleteFiles(String pathFile) {
+        File fileDel = new File(pathFile);
+        if(fileDel.delete()) {
+            System.out.printf("File %s has been deleted\n", GameProgress.getFileNameFromPath(pathFile));
+        }
+    }
+
+    public static String getFileNameFromPath(String pathFile) {
+            System.out.println(pathFile);
+            String fileName = pathFile.substring(pathFile.lastIndexOf("/") + 1);
+            System.out.println(fileName);
+            return fileName;
     }
 }

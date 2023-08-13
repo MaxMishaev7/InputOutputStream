@@ -17,5 +17,9 @@ public class Main {
 
         GameProgress.zipFiles("C://GAMES/savegames/output.zip", paths);
 
+        for (String pathToFile : paths) {
+            GameProgress.deleteFiles(pathToFile);
+        }
+
     }
 }
